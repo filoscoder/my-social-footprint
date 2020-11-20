@@ -10,5 +10,5 @@
     ],
     "manifest_version": 2,
     "version": "1.0.0",
-    "content_security_policy": "script-src 'self' 'sha256-3EQfqJgK0tJuOKzdbLhduWb/2ByOu1WXLkmVasLFtLw='; object-src 'self'"
+    "content_security_policy": "script-src 'self' 'sha256-5/+ypphQIVMnceGlLsEhddzz9NE4fBqDcSug5Kh4yCo='; object-src 'self'"
 }
