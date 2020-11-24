@@ -17,15 +17,16 @@ export type AuthPageProps = {
 
 
 function AuthPage(props: AuthPageProps) {
+    const [token, setToken] = React.useState<string>("IGQVJYZAUF1ek40R29Qc2FDZAGxyRExGa2xaV1dCcVRJbjhSck4wRnpMd0JuZAlZA6M3FjM2F6M25nTXJYVURXQkVBYnQtbC1ZAUk1RTkZA4ZAGY4NmdueHNha2ZAhekVYMzA1TWlmWGlZAS29YUW45RE9USXFkMgZDZD")
+
     const { type = "instagram" } = props;
-    const location = useLocation();
     const clientId = "1464734727059421";
-    const redirectUri = "http://localhost:3000/";
+    const redirectUri = "https://cdtp.site/";
     const apiUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code&state=1`;
 
-    const onCode = () => {
-        console.log("wooooo a code");
-        console.log("alright! the URLSearchParams interface from the popup url");
+    const onCode = (code: any, params: any) => {
+        console.log("wooooo a code", code);
+        console.log("alright! the URLSearchParams interface from the popup url", params);
     }
     const onClose = () => console.log("closed!");
 
