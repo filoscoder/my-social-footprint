@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { NavLink, Route, useLocation } from 'react-router-dom';
 
 import { FlexContainer } from '../components/containers/flexContainer';
@@ -8,7 +9,6 @@ export type MainPageProps = {};
 
 function MainPage(props: MainPageProps) {
     const location = useLocation();
-    const isFloating = ['/', '/map'].indexOf(location.pathname) !== -1;
 
 
     return (
@@ -17,6 +17,17 @@ function MainPage(props: MainPageProps) {
             {/* <Route path={['/']} component={Feed} exact />
             <Route path={['/map']} component={Map} />
             <Route path={['/mypage']} component={MyPage} /> */}
+            <div>
+                {"Header"}
+            </div>
+            <div>
+                {/* {photos.map(i => {
+                    console.log(i)
+                    return (
+                        <img alt={i.caption} src={i.thumbnailUrl} />
+                    )
+                })} */}
+            </div>
         </FlexContainer>
     );
 }
