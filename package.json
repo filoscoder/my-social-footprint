@@ -1,8 +1,7 @@
 {
-    "name": "sns-footprint",
+    "name": "footprint",
     "version": "0.1.0",
     "private": true,
-    "homepage": "https://filoscoder.github.io/footprint/",
     "dependencies": {
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
@@ -13,6 +12,7 @@
         "@types/react-dom": "^16.9.8",
         "axios": "^0.21.0",
         "instagram-private-api": "^1.43.3",
+        "netlify-cli": "^2.69.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-oauth-popup": "^1.0.2",

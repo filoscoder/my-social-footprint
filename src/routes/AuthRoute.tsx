@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Redirect, Route, useHistory } from 'react-router-dom';
 
 import MainPage from "../pages/MainPage";
+import UserContext from '../lib/context'
 
 interface RouteProps {
   component: any;
@@ -11,18 +12,22 @@ interface RouteProps {
 function AuthRoute({ component, path, exact }: RouteProps) {
   const [user, setUser] = React.useState<boolean>(false);
 
-  // useEffect(() => {
-  //   const unsubscribe = firebase.getAuth().onAuthStateChanged((auth: any) => {
-  //     setUser(Boolean(auth));
-  //   });
 
-  //   return unsubscribe;
-  // }, [user]);
+  return (
+    <UserContext.Consumer>
+      {token => {
+        console.log(token);
 
-  if (!user && path === '/')
-    return <Redirect to={'/signin'} />;
-
-  return <Route exact={exact} path={path} component={component} />;
+        return (
+          token.token ?
+            <Route exact={exact} path={path} component={component} />
+            :
+            <Redirect to={'/signin'} />
+        )
+      }
+      }
+    </UserContext.Consumer>
+  )
 }
 
 export default AuthRoute;
