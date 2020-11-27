@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 interface FlexContainerProps {
-    children: JSX.Element[] | JSX.Element
+    children: React.ReactNode | JSX.Element[] | JSX.Element
 }
 
 export const FlexContainer: React.FC<FlexContainerProps> = ({ children }) => {
