@@ -2,29 +2,36 @@ import axios from "axios";
 
 const AppId = process.env.REACT_APP_IG_CLIENT_ID || "";
 const AppSecret = process.env.REACT_APP_IG_CLIENT_SECRET || "";
-const redirectUri = process.env.REACT_APP_REDIRECT_URL || "";
+const redirectUri =
+  "https://localhost:3000/" || process.env.REACT_APP_REDIRECT_URL;
 const tokenUrl = process.env.REACT_APP_IG_TOKEN_URL || "";
 const authUrl = process.env.REACT_APP_IG_AUTH_URL || "";
 
-export const getAccessToken = async (code: string) => {
+export const getAccessToken = async () => {
+  const code = new URLSearchParams(window.location.search).get("code") || "";
+  if (code === "") {
+    return;
+  }
+
   try {
     const bodyFormData = new FormData();
     bodyFormData.append("client_id", AppId);
     bodyFormData.append("client_secret", AppSecret);
     bodyFormData.append("grant_type", "authorization_code");
-    bodyFormData.append("redirect_url", redirectUri);
+    bodyFormData.append("redirect_uri", redirectUri);
     bodyFormData.append("code", code);
 
-    console.log(bodyFormData);
-
-    const response = await axios.post(tokenUrl, bodyFormData, {
-      headers: {
-        "Access-Control-Allow-Credentials": true,
-      },
-    });
+    const response = await axios.post(tokenUrl, bodyFormData);
     console.log(response);
 
-    return response;
+    if (response.status !== 200) {
+      return;
+    }
+
+    localStorage.setItem("ig_token", response.data.access_token);
+    localStorage.setItem("ig_user_id", response.data.user_id);
+
+    return response.data.access_token;
   } catch (error) {
     console.log("[getAccessToken] Error: ", error);
   }
@@ -40,9 +47,14 @@ export const getAuthCode = async () => {
         response_type: "code",
       },
     });
+
     console.log(response);
 
-    return response;
+    if (response.status !== 200) {
+      return;
+    }
+
+    return (window.location.href = response.request.responseURL);
   } catch (error) {
     console.log("[getAccessToken] Error: ", error);
   }
