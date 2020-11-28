@@ -1,53 +1,68 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { NavLink, Route, useLocation } from 'react-router-dom';
-import React, { useContext } from 'react';
+import { FacebookLoginButton, GoogleLoginButton, InstagramLoginButton } from "react-social-login-buttons";
 
 import { FlexContainer } from '../components/containers/flexContainer';
-import { InstagramLoginButton } from "react-social-login-buttons";
-import OauthPopup from 'react-oauth-popup';
-import UserContext from "../lib/context"
-import axios from 'axios';
+import { LoadingOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Spin } from 'antd';
+import { getAuthCode } from "../lib/api/instagram";
 import styled from 'styled-components';
 
 export type AuthPageProps = {
     type: string;
+    loading: boolean;
+    setLoading: (state: boolean) => void;
 };
 
 
-function AuthPage(props: AuthPageProps) {
-    const userContext = useContext(UserContext);
+const AuthPage: React.FC<AuthPageProps> = ({ type = "instagram", loading, setLoading }) => {
 
-
-    const { type = "instagram" } = props;
-    const clientId = "1464734727059421";
-    const redirectUri = "https://my-social-footprint.netlify.app/";
-    const apiUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code&state=1`;
-
-    const onCode = (code: any, params: any) => {
-        console.log("wooooo a code", code);
-        console.log("alright! the URLSearchParams interface from the popup url", params);
+    const renderAuthButton = (type: string) => {
+        switch (type) {
+            case "facebook":
+                return (
+                    <FacebookLoginButton onClick={handleSocialButton}>
+                        <span>Connect with</span>
+                    </FacebookLoginButton>
+                )
+            case "instagram":
+                return (
+                    <InstagramLoginButton onClick={handleSocialButton}>
+                        <span>Connect with</span>
+                    </InstagramLoginButton>
+                )
+            case "youtube":
+                return (
+                    <GoogleLoginButton onClick={handleSocialButton}>
+                        <span>Connect with</span>
+                    </GoogleLoginButton>
+                )
+            default:
+                break;
+        }
     }
-    const onClose = () => console.log("closed!");
+
+    const handleSocialButton = async () => {
+
+        setLoading(true);
+        await getAuthCode();
+    }
 
     return (
         <FlexContainer>
             <Block>
-                <OauthPopup
-                    title={"Insta"}
-                    width={500}
-                    height={600}
-                    url={apiUrl}
-                    onCode={onCode}
-                    onClose={onClose}
-                >
-                    <InstagramLoginButton onClick={() => console.log(type)} />
-                </OauthPopup>
+                {loading ?
+                    <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+                    :
+                    (renderAuthButton(type))
+                }
             </Block>
         </FlexContainer>
     )
 }
 const Block = styled.div`
-
+    height: 500px;
+    display: flex;
+    align-items: center;
 `;
 
 export default AuthPage;
