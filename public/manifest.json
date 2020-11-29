@@ -1,14 +1,12 @@
 {
-    "short_name": "SNS Footprint",
+    "short_name": "My Social Footprint",
     "name": "Dashboard that make marketers smile",
     "browser_action": {
         "default_popup": "index.html",
         "default_title": "SNS Footprint"
     },
-    "permissions": [
-        "storage"
-    ],
+    "permissions": ["tabs", "storage", "*://*/*", "webRequest", "webRequestBlocking"],
     "manifest_version": 2,
     "version": "1.0.0",
-    "content_security_policy": "script-src 'self' 'sha256-5/+ypphQIVMnceGlLsEhddzz9NE4fBqDcSug5Kh4yCo='; object-src 'self'"
+    "content_security_policy": "script-src 'self' 'sha256-+PVOBpW+n7Kl4zqGBPAMB+oJZmVhgJK9NdT/HBBUIlE='; object-src 'self'"
 }
