@@ -13,8 +13,7 @@ const Container = styled.div`
     overflow-y: hidden;
 `;
 
-interface FlexContainerProps {
-    children: React.ReactNode | JSX.Element[] | JSX.Element
+interface FlexContainerProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 export const FlexContainer: React.FC<FlexContainerProps> = ({ children }) => {
