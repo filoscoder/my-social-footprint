@@ -5,12 +5,15 @@ import { BrowserRouter } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Store from './lib/store/index';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <GlobalStyles />
-      <App />
+      <Store>
+        <App />
+      </Store>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
