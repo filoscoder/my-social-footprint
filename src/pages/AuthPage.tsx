@@ -1,21 +1,17 @@
 import { FacebookLoginButton, GoogleLoginButton, InstagramLoginButton } from "react-social-login-buttons";
+import React, { useContext } from 'react';
 
+import { Context } from "../lib/store";
 import { FlexContainer } from '../components/containers/flexContainer';
-import { LoadingOutlined } from '@ant-design/icons';
-import React from 'react';
-import { Spin } from 'antd';
 import { getAuthCode } from "../lib/api/instagram";
 import styled from 'styled-components';
 
 export type AuthPageProps = {
-    type: string;
-    loading: boolean;
-    setLoading: (state: boolean) => void;
 };
 
 
-const AuthPage: React.FC<AuthPageProps> = ({ type = "instagram", loading, setLoading }) => {
-
+const AuthPage: React.FC<AuthPageProps> = ({ }) => {
+    const [state, dispatch] = useContext(Context);
     const renderAuthButton = (type: string) => {
         switch (type) {
             case "facebook":
@@ -42,18 +38,14 @@ const AuthPage: React.FC<AuthPageProps> = ({ type = "instagram", loading, setLoa
     }
 
     const handleSocialButton = async () => {
-
-        setLoading(true);
         await getAuthCode();
     }
 
     return (
         <FlexContainer>
             <Block>
-                {loading ?
-                    <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-                    :
-                    (renderAuthButton(type))
+                {
+                    renderAuthButton(state.social)
                 }
             </Block>
         </FlexContainer>
