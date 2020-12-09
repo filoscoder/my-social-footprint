@@ -1,32 +1,49 @@
-import React, { useEffect } from 'react';
-import { Redirect, Route, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import { checkLoginSession, setTokenToSession } from '../lib/utils';
 
-import MainPage from "../pages/MainPage";
-import UserContext from '../lib/context'
+import Indicator from '../components/common/Indicator';
 
-interface RouteProps {
-  component: any;
-  path: string;
+interface AuthRouteProps {
   exact: boolean;
+  path: string;
+  component: any;
+  social: string;
 }
-function AuthRoute({ component, path, exact }: RouteProps) {
-  const [user, setUser] = React.useState<boolean>(false);
+const AuthRoute: React.FC<AuthRouteProps> = ({ exact, path, component, social }) => {
+  const [isLogged, setLogin] = useState(false);
+  const [waiting, setWaiting] = useState(true);
 
+  useEffect(() => {
+    const sessionState = checkLoginSession(social);
+
+    setTimeout(() => {
+      setWaiting(false);
+    }, 1000);
+
+    (async function () {
+      if (sessionState) {
+        setLogin(true);
+      } else {
+        const token = await setTokenToSession(social);
+        if (token !== undefined) {
+          return setLogin(true);
+        } else {
+          setLogin(false);
+        }
+      }
+    })();
+
+  }, [social])
 
   return (
-    <UserContext.Consumer>
-      {token => {
-        console.log(token);
-
-        return (
-          token.token ?
-            <Route exact={exact} path={path} component={component} />
-            :
-            <Redirect to={'/signin'} />
-        )
-      }
-      }
-    </UserContext.Consumer>
+    waiting ?
+      <Indicator />
+      :
+      isLogged ?
+        <Route exact={exact} path={path} component={component} />
+        :
+        <Redirect to={`/${social}/signin`} />
   )
 }
 
