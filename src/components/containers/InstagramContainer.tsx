@@ -1,26 +1,32 @@
 import {
     DesktopOutlined,
-    FileOutlined,
     PieChartOutlined,
-    TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
+import React, { useContext, useEffect } from 'react';
 
+import { Context } from '../../lib/store';
 import { FlexContainer } from './flexContainer';
-import React from 'react';
+import { getMe } from '../../lib/api/instagram';
 
 const { Sider, Content } = Layout;
-const { SubMenu } = Menu;
 
-
-type SiderNavProps = {
+type ContentProps = {
     theme: "light" | "dark",
+    social: "facebook" | "instagram" | "youtube",
     children: React.ReactNode
 };
 
-const SiderNav: React.FC<SiderNavProps> = ({ theme, children }) => {
+const InstagramContainer: React.FC<ContentProps> = ({ theme, social, children }) => {
+    const [state, dispatch] = useContext(Context);
     const [selectedMenu, setMenuTab] = React.useState<string>("1");
+
+    useEffect(() => {
+        console.log(state)
+        const token = sessionStorage.getItem('instagram_token');
+        getMe(state.instagram_token || token);
+    }, [])
 
 
     const onSelectMenu = ({ item, key, keyPath, selectedKeys, domEvent }: any) => {
@@ -30,8 +36,8 @@ const SiderNav: React.FC<SiderNavProps> = ({ theme, children }) => {
 
     return (
         <Layout>
-            <Sider theme={theme} defaultCollapsed={true} collapsible >
-                <Menu defaultSelectedKeys={['1']} mode="inline" theme={theme} onSelect={onSelectMenu}>
+            <Sider theme={state.theme} defaultCollapsed={true} collapsible >
+                <Menu defaultSelectedKeys={['1']} mode="inline" theme={state.theme} onSelect={onSelectMenu}>
                     <Menu.Item key="1" icon={<PieChartOutlined />}>
                         Option 1
                     </Menu.Item>
@@ -45,10 +51,14 @@ const SiderNav: React.FC<SiderNavProps> = ({ theme, children }) => {
             </Sider>
 
             <Layout>
-                {children}
+                <Content>
+                    <FlexContainer>
+                        {"asdasd"}
+                    </FlexContainer>
+                </Content>
             </Layout>
         </Layout>
     );
 }
 
-export default SiderNav;
+export default InstagramContainer;
