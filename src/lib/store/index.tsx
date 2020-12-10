@@ -2,25 +2,33 @@ import React, { createContext, useReducer } from 'react';
 
 import Reducer from './Reducer';
 
+type SocialDataType = {
+    token: string,
+    userId: string
+}
+
 export type UserContextType = {
-    facebook_token: string,
-    facebook_userId: string,
-    instagram_token: string,
-    instagram_userId: string,
-    youtube_token: string,
-    youtube_userId: string,
-    social: string,
+    facebook: SocialDataType,
+    instagram: SocialDataType,
+    youtube: SocialDataType,
+    social: "facebook" | "instagram" | "youtube",
     defaultSocial: string,
     theme: string,
 }
 
 const initialState = {
-    facebook_token: '',
-    facebook_userId: '',
-    instagram_token: '',
-    instagram_userId: '',
-    youtube_token: '',
-    youtube_userId: '',
+    facebook: {
+        token: sessionStorage.getItem("facebook_token") || '',
+        userId: sessionStorage.getItem("facebook_userId") || '',
+    },
+    instagram: {
+        token: sessionStorage.getItem("instagram_token") || '',
+        userId: sessionStorage.getItem("instagram_userId") || '',
+    },
+    youtube: {
+        token: sessionStorage.getItem("youtube_token") || '',
+        userId: sessionStorage.getItem("youtube_userId") || '',
+    },
     social: 'instagram',
     defaultSocial: 'instagram',
     theme: "dark"
