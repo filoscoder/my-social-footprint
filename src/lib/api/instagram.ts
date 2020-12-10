@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+
 import { openNotification } from "../utils";
 
 const AppId = process.env.REACT_APP_IG_CLIENT_ID || "";
@@ -26,19 +27,29 @@ export const getAccessToken = async () => {
     const response = await axios.post(tokenUrl, bodyFormData);
 
     if (response.status !== 200) {
-      return;
+      openNotification(
+        "error",
+        `Error`,
+        "Something went wrong. \n Please, try again"
+      );
+      return null;
     }
 
+    const { id, username } = await getMe(response.data.access_token);
+
     sessionStorage.setItem("instagram_token", response.data.access_token);
-    sessionStorage.setItem("instagram_userId", response.data.user_id);
+    sessionStorage.setItem("instagram_userId", id);
+    sessionStorage.setItem("instagram_username", username);
 
-    const me = await getMe(response.data.access_token);
+    openNotification("success", "Logged in", `Welcome back ${username}!`);
 
-    openNotification("success", "Logged in", `Welcome back ${me.username}!`);
-
-    return response.data.access_token;
+    return { token: response.data.access_token, userId: response.data.user_id };
   } catch (error) {
-    openNotification("error", `Error`, "Something went wrong.");
+    openNotification(
+      "error",
+      `Error`,
+      "Something went wrong. \n Please, try again"
+    );
     console.log("[getAccessToken] Error: ", error);
   }
 };
@@ -72,11 +83,14 @@ export const getAuthCode = async () => {
   }
 };
 
-export const getMe = async (token: string) => {
+export const getMe = async (
+  token: string,
+  fields = "account_type,id,username,media_count"
+) => {
   try {
     const response = await axios.get(`${apiUrl}/me`, {
       params: {
-        fields: "id,username",
+        fields: fields,
         access_token: token,
       },
     });
@@ -84,8 +98,51 @@ export const getMe = async (token: string) => {
     if (response.status !== 200) {
       return;
     }
-
     return response.data;
+  } catch (error) {
+    console.log("[getMe] Error: ", error);
+  }
+};
+
+export const getMedia = async (
+  fields: string = "id,username,caption,media_type,media_url,thumbnail_url,timestamp"
+) => {
+  try {
+    const storageToken = sessionStorage.getItem("instagram_token");
+    const storageUserId = sessionStorage.getItem("instagram_userId");
+
+    const response: any = await axios.get(`${apiUrl}/${storageUserId}/media`, {
+      params: {
+        fields: fields,
+        access_token: storageToken,
+      },
+    });
+
+    if (response.status !== 200) {
+      return;
+    }
+    return {
+      data: response.data.data,
+      next: response.data.paging.next,
+    };
+  } catch (error) {
+    console.log("[getMe] Error: ", error);
+  }
+};
+
+export const getMoreMedia = async (nextUrl: string) => {
+  try {
+    const response: any = await axios.get(nextUrl);
+
+    if (response.status !== 200) {
+      return;
+    }
+
+    return {
+      data: response.data.data,
+      next: response.data.paging.next,
+      previous: response.data.paging.previous,
+    };
   } catch (error) {
     console.log("[getMe] Error: ", error);
   }
