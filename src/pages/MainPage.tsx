@@ -1,35 +1,26 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { NavLink, Route, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import { FlexContainer } from '../components/containers/flexContainer';
+import FacebookContainer from '../components/containers/FacebookContainer'
+import InstagramContainer from '../components/containers/InstagramContainer'
 import React from 'react';
-import styled from 'styled-components';
+import YoutubeContainer from '../components/containers/YoutubeContainer'
 
-export type MainPageProps = {};
+export type MainPageProps = {
+    theme: "light" | "dark";
+    social: "facebook" | "instagram" | "youtube";
+};
 
-function MainPage(props: MainPageProps) {
-    const location = useLocation();
-
+const MainPage: React.FC<MainPageProps> = ({ social, theme }) => {
 
     return (
-        <FlexContainer>
-
-            {/* <Route path={['/']} component={Feed} exact />
-            <Route path={['/map']} component={Map} />
-            <Route path={['/mypage']} component={MyPage} /> */}
-            <div>
-                {"Header"}
-            </div>
-            <div>
-                {/* {photos.map(i => {
-                    console.log(i)
-                    return (
-                        <img alt={i.caption} src={i.thumbnailUrl} />
-                    )
-                })} */}
-            </div>
-        </FlexContainer>
+        <Switch>
+            <Route path={`/facebook`} component={FacebookContainer} />
+            <Route path={`/instagram`} component={InstagramContainer} />
+            <Route path={`/youtube`} component={YoutubeContainer} />
+            {/* <AuthRoute component={NotFound} /> */}
+        </Switch>
     );
 }
+
 
 export default MainPage;
