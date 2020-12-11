@@ -6,6 +6,15 @@ import GlobalStyles from './GlobalStyles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Store from './lib/store/index';
+import { initFacebookSdk } from './lib/helpers'
+
+declare global {
+  interface Window {
+    FB: any;
+  }
+}
+
+initFacebookSdk();
 
 ReactDOM.render(
   <React.StrictMode>
