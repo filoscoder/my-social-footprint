@@ -7,16 +7,19 @@ const Reducer = (state: UserContextType, action: any) => {
                 ...state,
                 social: action.social
             };
-        case 'SET_TOKEN':
+        case 'SET_CREDENTIAL':
             return {
                 ...state,
-                instagram_token: 'action'
+                [action.social]: {
+                    token: action.token,
+                    userId: action.userId
+                }
             };
-        case 'SET_USER_ID':
-            return {
-                ...state,
-                instagram_userId: 'action'
-            };
+        // case 'SET_USER_ID':
+        //     return {
+        //         ...state,
+        //         instagram_userId: 'action'
+        //     };
 
         default:
             return state;
