@@ -1,4 +1,4 @@
-const AppId = process.env.REACT_APP_IG_CLIENT_ID || "";
+const AppId = process.env.REACT_APP_ID || "";
 const FbSdkVer = process.env.REACT_APP_FB_SDK_VER || "v9.0";
 
 export function initFacebookSdk() {
