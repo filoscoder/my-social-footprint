@@ -18,8 +18,9 @@ const { Header } = Layout;
 
 
 function App() {
+    const currentTab = window.location.pathname.split('/')[1]
     const [state, dispatch] = useContext(Context);
-    const [selectedTab, setSelectedTab] = useState(state.defaultSocial);
+    const [selectedTab, setSelectedTab] = useState(currentTab);
 
     const onSelectTab = ({ item, key, keyPath, selectedKeys, domEvent }: any) => {
         setSelectedTab(key);
@@ -33,7 +34,7 @@ function App() {
                     <LogoBlock href={`/${selectedTab}`}>
                         {selectedTab}
                     </LogoBlock>
-                    <Menu mode="horizontal" defaultSelectedKeys={[state.defaultSocial]} theme={state.theme}
+                    <Menu mode="horizontal" defaultSelectedKeys={[currentTab]} theme={state.theme}
                         onSelect={onSelectTab}
                     >
                         <Menu.Item key="facebook">
@@ -55,8 +56,8 @@ function App() {
                 </LeftBlock>
             </Header>
             <Switch>
-                <AuthRoute exact path={`/${selectedTab}`} component={MainPage} social={selectedTab} />
-                <NAuthRoute exact path={`/${selectedTab}/signin`} component={AuthPage} social={state.social} />
+                <AuthRoute exact path={`/${selectedTab}`} component={MainPage} />
+                <NAuthRoute exact path={`/${selectedTab}/signin`} component={AuthPage} />
             </Switch>
         </Layout>
     );
