@@ -1,7 +1,7 @@
 import { FacebookLoginButton, GoogleLoginButton, InstagramLoginButton } from "react-social-login-buttons";
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { login, logout } from '../lib/api/facebook'
 
-import { Context } from "../lib/store";
 import { FlexContainer } from '../components/containers/flexContainer';
 import { getAuthCode } from "../lib/api/instagram";
 import styled from 'styled-components';
@@ -11,14 +11,19 @@ export type AuthPageProps = {
 
 
 const AuthPage: React.FC<AuthPageProps> = ({ }) => {
-    const [state, dispatch] = useContext(Context);
+    const currentTab = window.location.pathname.split('/')[1]
+    console.log(currentTab)
+
     const renderAuthButton = (type: string) => {
         switch (type) {
             case "facebook":
                 return (
-                    <FacebookLoginButton onClick={handleSocialButton}>
-                        <span>Connect with</span>
-                    </FacebookLoginButton>
+                    <>
+                        <FacebookLoginButton onClick={handleSocialButton}>
+                            <span>Connect with</span>
+                        </FacebookLoginButton>
+                        <button onClick={logout}>Log out</button>
+                    </>
                 )
             case "instagram":
                 return (
@@ -38,14 +43,31 @@ const AuthPage: React.FC<AuthPageProps> = ({ }) => {
     }
 
     const handleSocialButton = async () => {
-        await getAuthCode();
+        try {
+            switch (currentTab) {
+                case 'facebook':
+                    await login();
+                    break;
+                case 'instagram':
+                    await getAuthCode();
+                    break;
+
+                default:
+                    console.log(currentTab)
+                    break;
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
     }
+
 
     return (
         <FlexContainer>
             <Block>
                 {
-                    renderAuthButton(state.social)
+                    renderAuthButton(currentTab)
                 }
             </Block>
         </FlexContainer>
