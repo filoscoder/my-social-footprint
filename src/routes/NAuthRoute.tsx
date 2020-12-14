@@ -9,10 +9,12 @@ interface NAuthRouteProps {
     exact: boolean;
     path: string;
     component: any;
-    social: string;
 }
 
-function NAuthRoute({ exact, path, component, social }: NAuthRouteProps) {
+function NAuthRoute({ exact, path, component }: NAuthRouteProps) {
+    const currentTab = window.location.pathname.split('/')[1]
+
+    const [social] = useState(currentTab);
     const [isLogged, setLogin] = useState<boolean>(false);
 
     useEffect(() => {
