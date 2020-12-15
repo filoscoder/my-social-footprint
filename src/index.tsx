@@ -6,7 +6,7 @@ import GlobalStyles from './GlobalStyles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Store from './lib/store/index';
-import { initFacebookSdk } from './lib/helpers'
+import { initFacebookSdk } from './lib/helpers';
 
 declare global {
   interface Window {
@@ -14,9 +14,7 @@ declare global {
   }
 }
 
-initFacebookSdk();
-
-ReactDOM.render(
+const startApp = () => ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <GlobalStyles />
@@ -28,3 +26,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+initFacebookSdk().then(startApp);
