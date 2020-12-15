@@ -18,8 +18,11 @@ function NAuthRoute({ exact, path, component }: NAuthRouteProps) {
     const [isLogged, setLogin] = useState<boolean>(false);
 
     useEffect(() => {
-        const sessionState = checkLoginSession(social);
-        setLogin(sessionState);
+        (async function () {
+            const sessionState = await checkLoginSession(social);
+            return setLogin(sessionState);
+        })();
+
     }, [isLogged, social])
 
     return (

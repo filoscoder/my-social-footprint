@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { checkLoginSession, setTokenToSession } from '../lib/utils';
 
 import Indicator from '../components/common/Indicator';
-import { checkLoginState } from '../lib/api/facebook';
+import { checkLoginSession } from '../lib/utils';
 
 interface AuthRouteProps {
   exact: boolean;
   path: string;
   component: any;
+  social: string;
 }
-const AuthRoute: React.FC<AuthRouteProps> = ({ exact, path, component }) => {
-  const currentTab = window.location.pathname.split('/')[1]
+const AuthRoute: React.FC<AuthRouteProps> = ({ exact, path, component, social }) => {
 
-  const [social] = useState(currentTab);
   const [isLogged, setLogin] = useState(false);
   const [waiting, setWaiting] = useState(true);
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -24,22 +23,8 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ exact, path, component }) => {
 
 
     (async function () {
-      if (social === 'facebook') {
-        const response = await checkLoginState();
-        return response && setLogin(true);
-      }
-      if (social === 'instagram') {
-        const sessionState = checkLoginSession(social);
-        if (sessionState) {
-          return setLogin(true);
-        } else {
-          const token = await setTokenToSession(social);
-          if (token !== undefined) {
-            return setLogin(true);
-          }
-        }
-      }
-      return setLogin(false);
+      const sessionState = await checkLoginSession(social);
+      return setLogin(sessionState);
     })();
 
   }, [social])
