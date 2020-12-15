@@ -11,15 +11,8 @@ export function initFacebookSdk() {
                 xfbml: true,
                 version: FbSdkVer,
             });
-
-            // auto authenticate with the api if already logged in with facebook
-            window.FB.getLoginStatus(({ authResponse }) => {
-                if (authResponse) {
-                    console.log(authResponse)
-                } else {
-                    resolve();
-                }
-            });
+            window.FB.AppEvents.logPageView();
+            resolve();
         };
 
         // load facebook sdk script
