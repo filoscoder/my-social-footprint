@@ -12,7 +12,6 @@ export type AuthPageProps = {
 
 const AuthPage: React.FC<AuthPageProps> = ({ }) => {
     const currentTab = window.location.pathname.split('/')[1]
-    console.log(currentTab)
 
     const renderAuthButton = (type: string) => {
         switch (type) {
@@ -20,7 +19,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ }) => {
                 return (
                     <>
                         <FacebookLoginButton onClick={handleSocialButton}>
-                            <span>Connect with</span>
+                            <span>Continue with</span>
                         </FacebookLoginButton>
                         <button onClick={logout}>Log out</button>
                     </>
@@ -28,13 +27,13 @@ const AuthPage: React.FC<AuthPageProps> = ({ }) => {
             case "instagram":
                 return (
                     <InstagramLoginButton onClick={handleSocialButton}>
-                        <span>Connect with</span>
+                        <span>Connect with Facebook</span>
                     </InstagramLoginButton>
                 )
             case "youtube":
                 return (
                     <GoogleLoginButton onClick={handleSocialButton}>
-                        <span>Connect with</span>
+                        <span>Continue with</span>
                     </GoogleLoginButton>
                 )
             default:
@@ -49,7 +48,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ }) => {
                     await login();
                     break;
                 case 'instagram':
-                    await getAuthCode();
+                    await login();
                     break;
 
                 default:
