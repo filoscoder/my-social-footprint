@@ -15,7 +15,6 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ exact = false, path, component, s
   const [isLogged, setLogin] = useState(false);
   const [waiting, setWaiting] = useState(true);
 
-
   useEffect(() => {
     setTimeout(() => {
       setWaiting(false);
@@ -36,7 +35,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ exact = false, path, component, s
       isLogged ?
         <Route exact={exact} path={path} component={component} />
         :
-        <Redirect to={`/${social}/signin`} />
+        <Redirect to={`/signin/${social}`} />
   )
 }
 
