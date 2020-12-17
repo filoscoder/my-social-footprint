@@ -1,9 +1,8 @@
 import { FacebookLoginButton, GoogleLoginButton, InstagramLoginButton } from "react-social-login-buttons";
-import React, { useContext, useState } from 'react';
-import { login, logout } from '../lib/api/facebook'
 
 import { FlexContainer } from '../components/containers/flexContainer';
-import { getAuthCode } from "../lib/api/instagram";
+import React from 'react';
+import { login } from '../lib/api/facebook'
 import styled from 'styled-components';
 
 export type AuthPageProps = {
@@ -11,18 +10,15 @@ export type AuthPageProps = {
 
 
 const AuthPage: React.FC<AuthPageProps> = ({ }) => {
-    const currentTab = window.location.pathname.split('/')[1]
+    const currentTab = window.location.pathname.split('/')[2]
 
     const renderAuthButton = (type: string) => {
         switch (type) {
             case "facebook":
                 return (
-                    <>
-                        <FacebookLoginButton onClick={handleSocialButton}>
-                            <span>Continue with</span>
-                        </FacebookLoginButton>
-                        <button onClick={logout}>Log out</button>
-                    </>
+                    <FacebookLoginButton onClick={handleSocialButton}>
+                        <span>Continue with</span>
+                    </FacebookLoginButton>
                 )
             case "instagram":
                 return (
@@ -58,9 +54,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ }) => {
         } catch (error) {
             console.log(error)
         }
-
     }
-
 
     return (
         <FlexContainer>
