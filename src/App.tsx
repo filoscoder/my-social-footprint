@@ -20,7 +20,7 @@ const { Header } = Layout;
 
 
 function App() {
-    const currentTab = window.location.pathname.split('/')[1]
+    const currentTab = window.location.pathname.split('/')[2]
     const [state, dispatch] = useContext(Context);
     const [selectedTab, setSelectedTab] = useState(currentTab || state.defaultSocial);
 
@@ -65,7 +65,7 @@ function App() {
                 <AuthRoute path={`/facebook`} component={FacebookContainer} social={selectedTab} />
                 <AuthRoute path={`/instagram`} component={InstagramContainer} social={selectedTab} />
                 <AuthRoute path={`/youtube`} component={YoutubeContainer} social={selectedTab} />
-                <NAuthRoute exact path={`/${selectedTab}/signin`} component={AuthPage} />
+                <NAuthRoute exact path={`/signin/${selectedTab}`} component={AuthPage} />
             </Switch>
         </Layout>
     );
