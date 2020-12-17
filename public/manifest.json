@@ -3,10 +3,10 @@
     "name": "Dashboard that make marketers smile",
     "browser_action": {
         "default_popup": "index.html",
-        "default_title": "SNS Footprint"
+        "default_title": "My SNS footprint dashboard"
     },
-    "permissions": ["tabs", "storage", "*://*/*", "webRequest", "webRequestBlocking"],
+    "permissions": ["tabs"],
     "manifest_version": 2,
     "version": "1.0.0",
-    "content_security_policy": "script-src 'self' 'sha256-+PVOBpW+n7Kl4zqGBPAMB+oJZmVhgJK9NdT/HBBUIlE='; object-src 'self'"
+    "content_security_policy": "script-src 'self' 'sha256-wZpXirM7Auu3fhA8kZVmXUrXCAUmnu9iCVC/oRKjU3k='; object-src 'self'"
 }
