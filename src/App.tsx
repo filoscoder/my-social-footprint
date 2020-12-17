@@ -10,8 +10,10 @@ import React, { useContext, useState } from 'react';
 import AuthPage from './pages/AuthPage';
 import AuthRoute from './routes/AuthRoute';
 import { Context } from './lib/store';
-import MainPage from './pages/MainPage';
+import FacebookContainer from './components/containers/FacebookContainer';
+import InstagramContainer from './components/containers/InstagramContainer';
 import NAuthRoute from './routes/NAuthRoute';
+import YoutubeContainer from './components/containers/YoutubeContainer';
 import styled from 'styled-components';
 
 const { Header } = Layout;
@@ -20,11 +22,15 @@ const { Header } = Layout;
 function App() {
     const currentTab = window.location.pathname.split('/')[1]
     const [state, dispatch] = useContext(Context);
-    const [selectedTab, setSelectedTab] = useState(currentTab);
+    const [selectedTab, setSelectedTab] = useState(currentTab || state.defaultSocial);
 
     const onSelectTab = ({ item, key, keyPath, selectedKeys, domEvent }: any) => {
         setSelectedTab(key);
         dispatch({ type: 'SET_SOCIAL', social: key });
+    }
+
+    if (currentTab === '') {
+        window.location.href = `/${selectedTab}`;
     }
 
     return (
@@ -34,7 +40,7 @@ function App() {
                     <LogoBlock href={`/${selectedTab}`}>
                         {selectedTab}
                     </LogoBlock>
-                    <Menu mode="horizontal" defaultSelectedKeys={[currentTab]} theme={state.theme}
+                    <Menu mode="horizontal" selectedKeys={[selectedTab]} theme={state.theme}
                         onSelect={onSelectTab}
                     >
                         <Menu.Item key="facebook">
@@ -56,7 +62,9 @@ function App() {
                 </LeftBlock>
             </Header>
             <Switch>
-                <AuthRoute exact path={`/${selectedTab}`} component={MainPage} />
+                <AuthRoute path={`/facebook`} component={FacebookContainer} social={selectedTab} />
+                <AuthRoute path={`/instagram`} component={InstagramContainer} social={selectedTab} />
+                <AuthRoute path={`/youtube`} component={YoutubeContainer} social={selectedTab} />
                 <NAuthRoute exact path={`/${selectedTab}/signin`} component={AuthPage} />
             </Switch>
         </Layout>
