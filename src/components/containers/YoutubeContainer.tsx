@@ -30,7 +30,7 @@ const YoutubeContainer: React.FC<ContentProps> = ({ theme, social, children }) =
     return (
         <Layout>
             <Sider theme={state.theme} defaultCollapsed={true} collapsible >
-                <Menu defaultSelectedKeys={['1']} mode="inline" theme={theme} onSelect={onSelectMenu}>
+                <Menu defaultSelectedKeys={['1']} mode="inline" theme={state.theme} onSelect={onSelectMenu}>
                     <Menu.Item key="1" icon={<PieChartOutlined />}>
                         Option 1
                     </Menu.Item>
