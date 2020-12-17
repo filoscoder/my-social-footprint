@@ -1,4 +1,6 @@
-import { getAccessToken } from "./api/instagram";
+import { checkFbLoginState, getFbPages, getMe } from "./api/facebook";
+
+import { getIgBusinessAcc } from "./api/instagram";
 import { notification } from "antd";
 
 type notifType = 'success' | 'info' | 'warning' | 'error';
@@ -10,26 +12,29 @@ export const openNotification = (type: notifType, title: string, message: string
     });
 };
 
-export const checkLoginSession = (social: string): boolean => {
-    const token = sessionStorage.getItem(`${social}_token`);
-    return Boolean(token);
-}
-
-export const setTokenToSession = async (social: string) => {
-
+export const checkLoginSession = async (social: string): Promise<boolean> => {
     switch (social) {
-        case "facebook":
-            return undefined;
-        case "instagram":
-            return await getAccessToken();
-        case "youtube":
-            return undefined;
-        case "twitter":
-            return undefined;
+        case 'facebook':
+            const fbRes = await checkFbLoginState();
+            if (fbRes?.status === "connected") {
+                await getMe()
+
+                return true;
+            }
+            return false;
+        case 'instagram':
+            const igRes = await checkFbLoginState();
+            if (igRes?.status === "connected") {
+                await getFbPages();
+                await getIgBusinessAcc();
+                return true;
+            }
+            return false;
+        case 'youtube':
+
+            return false;
 
         default:
-            break;
+            return false;
     }
-
-
 }
