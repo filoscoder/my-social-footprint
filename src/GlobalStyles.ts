@@ -4,11 +4,9 @@ const GlobalStyles = createGlobalStyle`
 body {
   display: flex;
   justify-content: center;
-  background-color: ${palette.background2};
+  background-color: ${palette.background1};
   margin: 0;
   padding: 0;
-  font-family: 'NanumSquareRound', source-code-pro, Menlo, Monaco, Consolas,
-    'Courier New', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -ms-user-select: none; 
@@ -22,17 +20,12 @@ body {
   box-sizing: inherit;
 }
 
-input, button, textarea {
-  font-family: 'NanumSquareRound', source-code-pro, Menlo, Monaco, Consolas,
-    'Courier New', monospace;
-}
-
 html, body, #root {
   height: 100%;
   width: 100%;
+  color: #262626;
   font-size: 100%;
-  font-family: 'NanumSquareRound', source-code-pro, Menlo, Monaco, Consolas,
-    'Courier New', monospace;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   font-style: normal;
   font-weight: normal;
 }
