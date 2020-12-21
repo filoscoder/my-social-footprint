@@ -104,9 +104,9 @@ const InstagramContainer: React.FC<ContentProps> = ({ theme, social, children })
                 </Sider>
 
                 <Layout>
-                    <Content>
+                    <Content style={{ backgroundColor: '#FFFFFF' }}>
                         <HeadBlock>
-                            <Select defaultValue={0} bordered={false} onChange={handleAccountSelect}>
+                            <Select defaultValue={0} bordered={false} onChange={handleAccountSelect} style={{ marginRight: '50px' }}>
                                 {igAccounts.length > 0 &&
                                     igAccounts.map((account: FbPageInfoType, index: number) => {
                                         return (
@@ -125,14 +125,16 @@ const InstagramContainer: React.FC<ContentProps> = ({ theme, social, children })
                             <Indicator />
                             :
                             <Switch>
-                                <Route exact path={`${path}`} render={() => <IgDashboard currentAccount={currentAccount} handleLoader={handleLoader} />} />
-                                <Route exact path={`${path}/user`} render={() => <IgUser currentAccount={currentAccount} user={currentAccountInfo} handleLoader={handleLoader} />} />
-                                <Route exact path={`${path}/settings`} component={IgSettings} />
+                                <Block>
+                                    <Route exact path={`${path}`} render={() => <IgDashboard currentAccount={currentAccount} handleLoader={handleLoader} />} />
+                                    <Route exact path={`${path}/user`} render={() => <IgUser currentAccount={currentAccount} user={currentAccountInfo} handleLoader={handleLoader} />} />
+                                    <Route exact path={`${path}/settings`} component={IgSettings} />
+                                </Block>
                             </Switch>
                         }
                     </Content>
                 </Layout>
-            </Layout>
+            </Layout >
         ) :
         (
             <FlexContainer>
@@ -143,12 +145,19 @@ const InstagramContainer: React.FC<ContentProps> = ({ theme, social, children })
 }
 
 const HeadBlock = styled.div`
+    position: fixed;
     height: 50px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 16px;
+    background-color: #ffffff;
+    z-index: 1;
+`;
+const Block = styled.div`
+    margin-top: 50px;
+    padding-top: 16px;
+    padding-bottom: 16px;
 `;
 
 

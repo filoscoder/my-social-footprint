@@ -27,10 +27,12 @@ export const IgUser: React.FC<IgDashboardProps> = ({ currentAccount, user, handl
         })();
     }, [currentAccount])
 
+    console.log(currentAccount)
+
     return (
         <FlexContainer style={{ justifyContent: 'flex-start' }}>
             <UserHeader>
-                <Avatar size={100} src={user.profile_picture_url} />
+                <Avatar size={100} src={user.profile_picture_url} alt={currentAccount.name[0].toUpperCase()} />
                 <StatWrapper>
                     <StyledText fontSize={16} fontWeight={600} >
                         {user.media_count}
@@ -136,7 +138,7 @@ const UserMedia = styled.div`
 const MediaCard = styled.div`
     position: relative;
     width: 32%;
-    margin: 0.75px;
+    margin: 0.25%;
 
 `;
 const MediaOverlay = styled.div`
