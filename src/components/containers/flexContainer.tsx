@@ -10,15 +10,16 @@ const Container = styled.div`
     align-items: center;
 
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
 `;
 
 interface FlexContainerProps extends React.HTMLProps<HTMLDivElement> {
 }
 
-export const FlexContainer: React.FC<FlexContainerProps> = ({ children }) => {
+export const FlexContainer: React.FC<FlexContainerProps> = ({ children, ...rest }) => {
+    const htmlProps = rest as any;
     return (
-        <Container>
+        <Container {...htmlProps}>
             {children}
         </Container>
     )
