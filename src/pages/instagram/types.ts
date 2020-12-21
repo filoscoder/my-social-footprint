@@ -14,4 +14,5 @@ export type IgUserType = {
   name: string;
   profile_picture_url: string;
   username: string;
+  website: string;
 };

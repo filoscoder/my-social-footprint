@@ -16,5 +16,6 @@ export type FbPageInfoType = {
   category_list: Array<any>;
   id: string;
   name: string;
+  username: string;
   tasks: Array<string>;
 };
