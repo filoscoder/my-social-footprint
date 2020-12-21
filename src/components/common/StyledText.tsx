@@ -10,9 +10,8 @@ interface StyledTextProps extends React.HTMLProps<HTMLFontElement> {
 };
 
 const StyledText: React.FC<StyledTextProps> = (props) => {
-    const { color = palette.primaryMain, fontSize = 'inherit', fontWeight = 'inherit', children, ...rest } = props;
+    const { color = 'inherit', fontSize = 'inherit', fontWeight = 'inherit', children, ...rest } = props;
     const htmlProps = rest as any;
-    console.log(fontWeight)
     return (
         <StyledTextBody color={color} size={fontSize} weight={fontWeight} {...htmlProps}>
             {children}
