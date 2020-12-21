@@ -21,13 +21,14 @@ export const getIgBusinessAcc = async () => {
           storeFbPages.map(async (page) => {
             let { data } = await axios.get(`${ApiUrl}/${SdkVer}/${page.id}`, {
               params: {
-                fields: "instagram_business_account,name",
+                fields: "instagram_business_account,name,username",
                 access_token: page.access_token,
               },
             });
             return {
               id: data.instagram_business_account.id,
               name: data.name,
+              username: data.username || "",
               access_token: page.access_token,
             };
           })
@@ -71,16 +72,63 @@ export const getMe = async (
     if (response.status !== 200) {
       return;
     }
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log("[getMe] Error: ", error);
   }
 };
 
-export const getMedias = async (
+export const getMediaList = async (
   account: IgAccountType,
-  fields: string = "id,username,caption,media_type,media_url,thumbnail_url,timestamp"
+  fields: string = "caption,comments_count,id,ig_id,is_comment_enabled,like_count,media_type,media_url,owner,permalink,shortcode,thumbnail_url,timestamp,username"
+) => {
+  try {
+    console.log(account);
+    const response: any = await axios.get(
+      `${ApiUrl}/${SdkVer}/${account.id}/media`,
+      {
+        params: {
+          access_token: account.access_token,
+          fields,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      return;
+    }
+    console.log(response);
+    return {
+      data: response.data.data,
+      next: response.data.paging.next,
+    };
+  } catch (error) {
+    console.log("[getMe] Error: ", error);
+  }
+};
+
+export const getMoreMediaList = async (nextUrl: string) => {
+  try {
+    const response: any = await axios.get(nextUrl);
+
+    if (response.status !== 200) {
+      return;
+    }
+
+    return {
+      data: response.data.data,
+      next: response.data.paging.next,
+      previous: response.data.paging.previous,
+    };
+  } catch (error) {
+    console.log("[getMe] Error: ", error);
+  }
+};
+
+export const getMedia = async (
+  account: IgAccountType,
+  id: string,
+  fields: string = "id,"
 ) => {
   try {
     console.log(account);
@@ -100,24 +148,6 @@ export const getMedias = async (
     return {
       data: response.data.data,
       next: response.data.paging.next,
-    };
-  } catch (error) {
-    console.log("[getMe] Error: ", error);
-  }
-};
-
-export const getMoreMedias = async (nextUrl: string) => {
-  try {
-    const response: any = await axios.get(nextUrl);
-
-    if (response.status !== 200) {
-      return;
-    }
-
-    return {
-      data: response.data.data,
-      next: response.data.paging.next,
-      previous: response.data.paging.previous,
     };
   } catch (error) {
     console.log("[getMe] Error: ", error);
