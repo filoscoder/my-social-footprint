@@ -24,6 +24,7 @@ const initialState = {
     instagram: {
         token: sessionStorage.getItem("instagram_token") || '',
         userId: sessionStorage.getItem("instagram_userId") || '',
+        igAccounts: JSON.parse(localStorage.getItem("igBusinessAccounts") || "[]")
     },
     youtube: {
         token: sessionStorage.getItem("youtube_token") || '',
