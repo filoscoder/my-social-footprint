@@ -8,7 +8,6 @@ import {
 import { IgDashboard, IgSettings, IgUser } from '../../pages/instagram';
 import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import React, { useContext, useEffect } from 'react';
-import { getMe, getMedias } from '../../lib/api/instagram';
 
 import { Context } from '../../lib/store';
 import { FbPageInfoType } from '../../pages/facebook/types'
@@ -16,6 +15,7 @@ import { FlexContainer } from './flexContainer';
 import { IgUserType } from '../../pages/instagram/types';
 import Indicator from '../common/Indicator';
 import StyledText from '../common/StyledText';
+import { getMe } from '../../lib/api/instagram';
 import styled from 'styled-components';
 
 const { Sider, Content } = Layout;
@@ -28,10 +28,11 @@ type ContentProps = {
 };
 
 const InstagramContainer: React.FC<ContentProps> = ({ theme, social, children }) => {
-    const igAccounts = JSON.parse(localStorage.getItem("igBusinessAccounts") || "[]")
+    // igAccounts && igAccounts.reverse();
 
     const [state, dispatch] = useContext(Context);
-    const [currentAccount, setCurrentAccount] = React.useState(igAccounts[0] || { name: '', id: '' });
+    const igAccounts = state.instagram.igAccounts.reverse();
+    const [currentAccount, setCurrentAccount] = React.useState(igAccounts[0] || { username: '', name: '', id: '' });
     const [currentAccountInfo, setCurrentAccountInfo] = React.useState<IgUserType>({
         biography: '',
         follows_count: 0,
@@ -41,33 +42,30 @@ const InstagramContainer: React.FC<ContentProps> = ({ theme, social, children })
         media_count: 0,
         name: '',
         profile_picture_url: '',
-        username: ''
+        username: '',
+        website: ''
     });
     const [waiting, setWaiting] = React.useState(false);
     const [selectedMenu, setMenuTab] = React.useState<string>("1");
 
     const { path, url } = useRouteMatch();
-    console.log(igAccounts)
 
     useEffect(() => {
+        setWaiting(true);
         (async function () {
             const ig: IgUserType = await getMe(currentAccount);
-
+            console.log(ig)
             if (ig) {
                 setCurrentAccountInfo(ig);
-                console.log(currentAccountInfo)
+                setWaiting(false);
             }
         })();
-    }, [currentAccount])
+    }, [currentAccount]);
 
 
     const onSelectMenu = async ({ item, key, keyPath, selectedKeys, domEvent }: any) => {
         console.log({ item, key, keyPath, selectedKeys, domEvent })
         setMenuTab(key)
-        if (key === "1") {
-            const data: any = await getMedias(currentAccount);
-            console.log(data)
-        }
     }
 
     const handleAccountSelect = (value: number) => {
@@ -113,7 +111,9 @@ const InstagramContainer: React.FC<ContentProps> = ({ theme, social, children })
                                     igAccounts.map((account: FbPageInfoType, index: number) => {
                                         return (
                                             <Option key={index} value={index}>
-                                                {account.name}
+                                                <StyledText fontSize={16} fontWeight={700}>
+                                                    {account.username || account.name}
+                                                </StyledText>
                                             </Option>
                                         )
                                     })
